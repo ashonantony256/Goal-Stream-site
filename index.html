@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Football Fixtures</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #38bdf8;
+      text-align: center;
+    }
+
+    .fixture-list {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fixture {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .fixture:hover {
+      background: #334155;
+      transform: translateY(-2px);
+    }
+
+    .fixture.live {
+      border-left: 4px solid #ef4444;
+      background: #1f2937;
+    }
+
+    .fixture.live:hover {
+      background: #374151;
+    }
+
+    .teams {
+      font-weight: 600;
+    }
+
+    .date {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .live-tag {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 5px;
+      margin-left: 6px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 15px;
+      font-size: 0.8rem;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚽ Live Football Fixtures</h1>
+  <div class="fixture-list" id="fixtures"></div>
+
+  <footer>Powered by FootballStream • © 2025</footer>
+
+  <script>
+    async function loadFixtures() {
+      try {
+        const response = await fetch('match_details.json');
+        const fixtures = await response.json();
+        const container = document.getElementById('fixtures');
+
+        const now = new Date();
+
+        fixtures.forEach(fixture => {
+          const div = document.createElement('div');
+          div.className = 'fixture';
+
+          const fixtureDateTime = new Date(`${fixture.fixtureDate}T${fixture.fixtureTime}:00`);
+          const endTime = new Date(fixtureDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 hours duration
+          const isLive = now >= fixtureDateTime && now <= endTime;
+
+          div.innerHTML = `
+            <div class="teams">
+              ${fixture.homeTeam} vs ${fixture.awayTeam}
+              ${isLive ? '<span class="live-tag">LIVE</span>' : ''}
+            </div>
+            <div class="date">
+              ${fixture.fixtureDate} • ${fixture.fixtureTime}
+            </div>
+          `;
+
+          if (isLive) div.classList.add('live');
+
+          div.addEventListener('click', () => {
+            const url = new URL('stream.html', window.location.href);
+            url.searchParams.set('source', fixture.streamSource);
+            url.searchParams.set('home', fixture.homeTeam);
+            url.searchParams.set('away', fixture.awayTeam);
+            window.location.href = url.toString();
+          });
+
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Failed to load fixtures:", err);
+        document.getElementById('fixtures').innerHTML = 
+          `<p style="color:#f87171;">Error loading fixtures. Run with a local server.</p>`;
+      }
+    }
+
+    loadFixtures();
+  </script>
+</body>
+</html>

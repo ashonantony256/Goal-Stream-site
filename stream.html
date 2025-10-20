@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Stream</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin: 20px;
+      color: #38bdf8;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+
+    iframe {
+      width: 90%;
+      max-width: 900px;
+      height: 70vh;
+      border: none;
+      border-radius: 10px;
+      background: #1e293b;
+    }
+
+    a {
+      margin-top: 20px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="matchTitle">Loading...</h1>
+  <iframe id="streamFrame" allowfullscreen></iframe>
+  <a href="index.html">← Back to Fixtures</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('source');
+    const home = params.get('home');
+    const away = params.get('away');
+
+    const title = document.getElementById('matchTitle');
+    const frame = document.getElementById('streamFrame');
+
+    if (source) {
+      title.textContent = `${home} vs ${away}`;
+      frame.src = source;
+    } else {
+      title.textContent = "No Stream Source Found";
+    }
+  </script>
+</body>
+</html>
