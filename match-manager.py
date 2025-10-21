@@ -25,10 +25,10 @@ def parse_date(date_str):
     Returns the same format if valid, else shows error and returns None
     """
     try:
-        if len(date_str) != 8 or not date_str.isdigit():
+        if len(date_str) != 10 or date_str.isdigit():
             raise ValueError
         # Validate by trying to parse
-        datetime.strptime(date_str, "%d%m%Y")
+        datetime.strptime(date_str, "%d-%m-%Y")
         return date_str  # keep same format
     except ValueError:
         messagebox.showerror("Invalid Date", "Please enter the date in ddmmyyyy format (e.g., 20102025).")

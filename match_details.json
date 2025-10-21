@@ -3,7 +3,14 @@
         "homeTeam": "Barcelona",
         "awayTeam": "Olympiacos",
         "streamSource": "https://pl.yallashooot.video/albaplayer/1bein1/?serv=0",
-        "fixtureDate": "21102025",
+        "fixtureDate": "21-10-2025",
         "fixtureTime": "22:15"
+    },
+    {
+        "homeTeam": "Arsenal",
+        "awayTeam": "Athletico Madrid",
+        "streamSource": "https://www.example.com",
+        "fixtureDate": "22-10-2025",
+        "fixtureTime": "00:30"
     }
 ]
