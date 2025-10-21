@@ -23,7 +23,6 @@
       text-align: center;
     }
 
-    /* Fixture list */
     .fixture-list {
       margin-top: 20px;
       width: 90%;
@@ -34,7 +33,6 @@
       z-index: 1;
     }
 
-    /* Fixture card */
     .fixture {
       background: #1e293b;
       border-radius: 10px;
@@ -57,7 +55,6 @@
       background: #374151;
     }
 
-    /* Grid layout ensures perfect alignment */
     .fixture-grid {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -75,15 +72,17 @@
     }
 
     .team-side img {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       object-fit: cover;
       background: #334155;
+      border-radius: 6px;
     }
 
     .fixture-time {
       font-weight: 600;
       color: #f8fafc;
+      font-size: 1rem;
     }
 
     .fixture-bottom {
@@ -110,7 +109,14 @@
       100% { opacity: 1; }
     }
 
-    /* Ad placement */
+    .ad-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    /* Desktop right ad */
     .ad-container-right {
       position: fixed;
       top: 150px;
@@ -120,19 +126,63 @@
       z-index: 100;
     }
 
-    .ad-label {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-bottom: 4px;
-      text-align: center;
-    }
-
     footer {
       margin-top: auto;
       padding: 15px;
       font-size: 0.8rem;
       color: #64748b;
       text-align: center;
+    }
+
+    /* -------- Responsive Design -------- */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.4rem;
+        margin-top: 20px;
+      }
+
+      .team-side img {
+        width: 45px;
+        height: 45px;
+      }
+
+      .fixture {
+        padding: 10px 14px;
+      }
+
+      .fixture-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .fixture-time {
+        font-size: 0.95rem;
+      }
+
+      /* Hide right ad on mobile */
+      .ad-container-right {
+        display: none;
+      }
+
+      /* Make top ad smaller */
+      #ad1 iframe {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0 8px;
+      }
+
+      .fixture {
+        font-size: 0.9rem;
+      }
+
+      .fixture-bottom {
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -141,32 +191,34 @@
 
   <!-- Top ad -->
   <div class="ad-label">Advertisement</div>
-  <script id="ad1" type="text/javascript">
-    atOptions = {
-      'key' : '01c2d9886b859a95bc1e4e364628ea64',
-      'format' : 'iframe',
-      'height' : 90,
-      'width' : 728,
-      'params' : {}
-    };
-  </script>
-  <script id="ad1" type="text/javascript" src="//www.highperformanceformat.com/01c2d9886b859a95bc1e4e364628ea64/invoke.js"></script>
+  <div id="top-ad">
+    <script type="text/javascript">
+      atOptions = {
+        'key': '01c2d9886b859a95bc1e4e364628ea64',
+        'format': 'iframe',
+        'height': 90,
+        'width': 728,
+        'params': {}
+      };
+    </script>
+    <script src="//www.highperformanceformat.com/01c2d9886b859a95bc1e4e364628ea64/invoke.js"></script>
+  </div>
 
   <div class="fixture-list" id="fixtures"></div>
 
-  <!-- Right ad -->
+  <!-- Right ad (hidden on mobile) -->
   <div class="ad-container-right">
     <div class="ad-label">Advertisement</div>
-    <script id="ad2" type="text/javascript">
+    <script type="text/javascript">
       atOptions = {
-        'key' : '4ce2db646abd0578e9a22bf5e3e0d17b',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
+        'key': '4ce2db646abd0578e9a22bf5e3e0d17b',
+        'format': 'iframe',
+        'height': 300,
+        'width': 160,
+        'params': {}
       };
     </script>
-    <script id="ad2" type="text/javascript" src="//www.highperformanceformat.com/4ce2db646abd0578e9a22bf5e3e0d17b/invoke.js"></script>
+    <script src="//www.highperformanceformat.com/4ce2db646abd0578e9a22bf5e3e0d17b/invoke.js"></script>
   </div>
 
   <footer>Powered by Goal Stream</footer>
