@@ -23,24 +23,27 @@
       text-align: center;
     }
 
+    /* Fixture container */
     .fixture-list {
       margin-top: 20px;
       width: 90%;
-      max-width: 600px;
+      max-width: 700px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+      z-index: 1;
     }
 
+    /* Fixture card */
     .fixture {
       background: #1e293b;
       border-radius: 10px;
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 12px 18px;
       cursor: pointer;
       transition: background 0.2s ease, transform 0.1s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .fixture:hover {
@@ -57,13 +60,37 @@
       background: #374151;
     }
 
-    .teams {
-      font-weight: 600;
+    /* Fixture layout */
+    .fixture-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .date {
+    .team-side {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 100px;
+    }
+
+    .team-side img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #334155;
+    }
+
+    .fixture-time {
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .fixture-bottom {
+      text-align: center;
+      font-size: 0.85rem;
       color: #94a3b8;
-      font-size: 0.9rem;
     }
 
     .live-tag {
@@ -83,6 +110,23 @@
       100% { opacity: 1; }
     }
 
+    /* Ad placement */
+    .ad-container-right {
+      position: fixed;
+      top: 150px;
+      right: 20px;
+      width: 160px;
+      text-align: center;
+      z-index: 100;
+    }
+
+    .ad-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
     footer {
       margin-top: auto;
       padding: 15px;
@@ -94,28 +138,38 @@
 </head>
 <body>
   <h1>⚽ Live Football Fixtures</h1>
-  <script id="ad1"   type="text/javascript">
-	atOptions = {
-		'key' : '01c2d9886b859a95bc1e4e364628ea64',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
 
-<script id = "ad1" type="text/javascript" src="//www.highperformanceformat.com/01c2d9886b859a95bc1e4e364628ea64/invoke.js"></script>
+  <!-- Top ad banner -->
+  <div class="ad-label">Advertisement</div>
+  <script id="ad1" type="text/javascript">
+    atOptions = {
+      'key' : '01c2d9886b859a95bc1e4e364628ea64',
+      'format' : 'iframe',
+      'height' : 90,
+      'width' : 728,
+      'params' : {}
+    };
+  </script>
+  <script id="ad1" type="text/javascript" src="//www.highperformanceformat.com/01c2d9886b859a95bc1e4e364628ea64/invoke.js"></script>
+
+  <!-- Fixture List -->
   <div class="fixture-list" id="fixtures"></div>
-  <script id="ad2" type="text/javascript">
-	atOptions = {
-		'key' : '4ce2db646abd0578e9a22bf5e3e0d17b',
-		'format' : 'iframe',
-		'height' : 300,
-		'width' : 160,
-		'params' : {}
-	};
-</script>
-<script id="ad2" type="text/javascript" src="//www.highperformanceformat.com/4ce2db646abd0578e9a22bf5e3e0d17b/invoke.js"></script>
+
+  <!-- Right-side ad -->
+  <div class="ad-container-right">
+    <div class="ad-label">Advertisement</div>
+    <script id="ad2" type="text/javascript">
+      atOptions = {
+        'key' : '4ce2db646abd0578e9a22bf5e3e0d17b',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script id="ad2" type="text/javascript" src="//www.highperformanceformat.com/4ce2db646abd0578e9a22bf5e3e0d17b/invoke.js"></script>
+  </div>
+
   <footer>Powered by Goal Stream</footer>
 
   <script>
@@ -124,7 +178,6 @@
         const response = await fetch('match_details.json');
         const fixtures = await response.json();
         const container = document.getElementById('fixtures');
-
         const now = new Date();
 
         fixtures.forEach(fixture => {
@@ -132,20 +185,29 @@
           div.className = 'fixture';
 
           const fixtureDateTime = new Date(`${fixture.fixtureDate}T${fixture.fixtureTime}:00`);
-          const endTime = new Date(fixtureDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 hours duration
+          const endTime = new Date(fixtureDateTime.getTime() + 2 * 60 * 60 * 1000);
           const isLive = now >= fixtureDateTime && now <= endTime;
+          if (isLive) div.classList.add('live');
 
           div.innerHTML = `
-            <div class="teams">
-              ${fixture.homeTeam} vs ${fixture.awayTeam}
-              ${isLive ? '<span class="live-tag">LIVE</span>' : ''}
-            </div>
-            <div class="date">
-              ${fixture.fixtureDate} • ${fixture.fixtureTime}
-            </div>
-          `;
+            <div class="fixture-top">
+              <div class="team-side">
+                <img src="${fixture.homeLogo || 'https://via.placeholder.com/28'}" alt="home">
+                <span>${fixture.homeTeam}</span>
+              </div>
 
-          if (isLive) div.classList.add('live');
+              <div class="fixture-time">
+                ${fixture.fixtureTime}
+                ${isLive ? '<span class="live-tag">LIVE</span>' : ''}
+              </div>
+
+              <div class="team-side" style="justify-content:flex-end;">
+                <span>${fixture.awayTeam}</span>
+                <img src="${fixture.awayLogo || 'https://via.placeholder.com/28'}" alt="away">
+              </div>
+            </div>
+            <div class="fixture-bottom">${fixture.fixtureDate}</div>
+          `;
 
           div.addEventListener('click', () => {
             const url = new URL('stream.html', window.location.href);
