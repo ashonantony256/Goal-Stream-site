@@ -72,11 +72,11 @@
     }
 
     .team-side img {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       background: #334155;
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
     .fixture-time {
@@ -109,14 +109,7 @@
       100% { opacity: 1; }
     }
 
-    .ad-label {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-bottom: 4px;
-      text-align: center;
-    }
-
-    /* Desktop right ad */
+    /* Right ad (desktop only) */
     .ad-container-right {
       position: fixed;
       top: 150px;
@@ -124,6 +117,13 @@
       width: 160px;
       text-align: center;
       z-index: 100;
+    }
+
+    .ad-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-align: center;
     }
 
     footer {
@@ -134,16 +134,17 @@
       text-align: center;
     }
 
-    /* -------- Responsive Design -------- */
+    /* ---------------- Responsive Layout ---------------- */
+    @media (max-width: 900px) {
+      .ad-container-right {
+        display: none; /* Hide side banner */
+      }
+    }
+
     @media (max-width: 768px) {
       h1 {
         font-size: 1.4rem;
         margin-top: 20px;
-      }
-
-      .team-side img {
-        width: 45px;
-        height: 45px;
       }
 
       .fixture {
@@ -155,33 +156,41 @@
         gap: 6px;
       }
 
+      .team-side img {
+        width: 55px;
+        height: 55px;
+      }
+
       .fixture-time {
         font-size: 0.95rem;
       }
 
-      /* Hide right ad on mobile */
-      .ad-container-right {
-        display: none;
-      }
-
-      /* Make top ad smaller */
       #ad1 iframe {
-        max-width: 100% !important;
+        width: 100% !important;
         height: auto !important;
       }
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 0 8px;
+      .fixture {
+        padding: 8px 10px;
       }
 
-      .fixture {
-        font-size: 0.9rem;
+      .team-side img {
+        width: 45px;
+        height: 45px;
+      }
+
+      .fixture-time {
+        font-size: 0.85rem;
       }
 
       .fixture-bottom {
         font-size: 0.75rem;
+      }
+
+      body {
+        padding: 0 8px;
       }
     }
   </style>
@@ -194,16 +203,17 @@
   <div id="top-ad">
     <script type="text/javascript">
       atOptions = {
-        'key': '01c2d9886b859a95bc1e4e364628ea64',
-        'format': 'iframe',
-        'height': 90,
-        'width': 728,
-        'params': {}
+        'key' : '01c2d9886b859a95bc1e4e364628ea64',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
       };
     </script>
     <script src="//www.highperformanceformat.com/01c2d9886b859a95bc1e4e364628ea64/invoke.js"></script>
   </div>
 
+  <!-- Fixture list -->
   <div class="fixture-list" id="fixtures"></div>
 
   <!-- Right ad (hidden on mobile) -->
@@ -211,11 +221,11 @@
     <div class="ad-label">Advertisement</div>
     <script type="text/javascript">
       atOptions = {
-        'key': '4ce2db646abd0578e9a22bf5e3e0d17b',
-        'format': 'iframe',
-        'height': 300,
-        'width': 160,
-        'params': {}
+        'key' : '4ce2db646abd0578e9a22bf5e3e0d17b',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
       };
     </script>
     <script src="//www.highperformanceformat.com/4ce2db646abd0578e9a22bf5e3e0d17b/invoke.js"></script>
