@@ -21,17 +21,16 @@ def save_matches(matches):
 
 def parse_date(date_str):
     """
-    Accepts and validates date in ddmmyyyy format (e.g., 20102025 for 20 Oct 2025)
+    Accepts and validates date in ddmmyyyy format (e.g., 20-10-2025)
     Returns the same format if valid, else shows error and returns None
     """
     try:
         if len(date_str) != 10 or date_str.isdigit():
             raise ValueError
-        # Validate by trying to parse
         datetime.strptime(date_str, "%d-%m-%Y")
-        return date_str  # keep same format
+        return date_str
     except ValueError:
-        messagebox.showerror("Invalid Date", "Please enter the date in ddmmyyyy format (e.g., 20102025).")
+        messagebox.showerror("Invalid Date", "Please enter the date in ddmmyyyy format (e.g., 20-10-2025).")
         return None
 
 
@@ -39,34 +38,35 @@ class MatchManagerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("⚽ Match Manager")
-        self.root.geometry("750x420")
+        self.root.geometry("950x450")
         self.root.configure(bg="#f3f3f3")
 
         self.matches = load_matches()
 
-        # Title
         tk.Label(root, text="⚽ Match Manager", font=("Segoe UI", 18, "bold"), bg="#f3f3f3").pack(pady=10)
 
-        # Frame for list
         frame = tk.Frame(root, bg="#f3f3f3")
         frame.pack(fill="both", expand=True, padx=20)
 
-        columns = ("home", "away", "date", "time")
+        columns = ("home", "away", "date", "time", "homeLogo", "awayLogo")
         self.tree = ttk.Treeview(frame, columns=columns, show="headings", height=12)
         self.tree.heading("home", text="Home Team")
         self.tree.heading("away", text="Away Team")
         self.tree.heading("date", text="Date (ddmmyyyy)")
         self.tree.heading("time", text="Time")
+        self.tree.heading("homeLogo", text="Home Logo Path")
+        self.tree.heading("awayLogo", text="Away Logo Path")
 
-        self.tree.column("home", width=150)
-        self.tree.column("away", width=150)
-        self.tree.column("date", width=120, anchor="center")
+        self.tree.column("home", width=120)
+        self.tree.column("away", width=120)
+        self.tree.column("date", width=110, anchor="center")
         self.tree.column("time", width=80, anchor="center")
+        self.tree.column("homeLogo", width=180)
+        self.tree.column("awayLogo", width=180)
 
         self.tree.pack(fill="both", expand=True)
         self.refresh_tree()
 
-        # Button frame
         btn_frame = tk.Frame(root, bg="#f3f3f3")
         btn_frame.pack(pady=10)
 
@@ -80,7 +80,18 @@ class MatchManagerApp:
         for row in self.tree.get_children():
             self.tree.delete(row)
         for m in self.matches:
-            self.tree.insert("", "end", values=(m["homeTeam"], m["awayTeam"], m["fixtureDate"], m["fixtureTime"]))
+            self.tree.insert(
+                "",
+                "end",
+                values=(
+                    m.get("homeTeam", ""),
+                    m.get("awayTeam", ""),
+                    m.get("fixtureDate", ""),
+                    m.get("fixtureTime", ""),
+                    m.get("homeLogo", ""),
+                    m.get("awayLogo", "")
+                )
+            )
 
     def add_match(self):
         popup = MatchDialog(self.root, "Add Match")
@@ -90,6 +101,13 @@ class MatchManagerApp:
             if not parsed_date:
                 return
             match["fixtureDate"] = parsed_date
+
+            # Auto-prefix logo paths if missing
+            if not match["homeLogo"]:
+                match["homeLogo"] = f"/logos/{match['homeTeam'].replace(' ', '_')}.png"
+            if not match["awayLogo"]:
+                match["awayLogo"] = f"/logos/{match['awayTeam'].replace(' ', '_')}.png"
+
             self.matches.append(match)
             save_matches(self.matches)
             self.refresh_tree()
@@ -110,6 +128,13 @@ class MatchManagerApp:
             if not parsed_date:
                 return
             updated["fixtureDate"] = parsed_date
+
+            # Auto-prefix logo paths if missing
+            if not updated["homeLogo"]:
+                updated["homeLogo"] = f"/logos/{updated['homeTeam'].replace(' ', '_')}.png"
+            if not updated["awayLogo"]:
+                updated["awayLogo"] = f"/logos/{updated['awayTeam'].replace(' ', '_')}.png"
+
             self.matches[index] = updated
             save_matches(self.matches)
             self.refresh_tree()
@@ -148,7 +173,9 @@ class MatchDialog(simpledialog.Dialog):
             "awayTeam": "",
             "streamSource": "",
             "fixtureDate": "",
-            "fixtureTime": ""
+            "fixtureTime": "",
+            "homeLogo": "",
+            "awayLogo": ""
         }
         super().__init__(parent, title)
 
@@ -158,27 +185,49 @@ class MatchDialog(simpledialog.Dialog):
         tk.Label(frame, text="Stream Source:").grid(row=2, column=0, sticky="e")
         tk.Label(frame, text="Date (ddmmyyyy):").grid(row=3, column=0, sticky="e")
         tk.Label(frame, text="Time (HH:MM):").grid(row=4, column=0, sticky="e")
+        tk.Label(frame, text="Home Logo:").grid(row=5, column=0, sticky="e")
+        tk.Label(frame, text="Away Logo:").grid(row=6, column=0, sticky="e")
 
         self.home_entry = tk.Entry(frame)
         self.away_entry = tk.Entry(frame)
         self.source_entry = tk.Entry(frame)
         self.date_entry = tk.Entry(frame)
         self.time_entry = tk.Entry(frame)
+        self.home_logo_entry = tk.Entry(frame)
+        self.away_logo_entry = tk.Entry(frame)
 
         self.home_entry.grid(row=0, column=1, padx=5, pady=3)
         self.away_entry.grid(row=1, column=1, padx=5, pady=3)
         self.source_entry.grid(row=2, column=1, padx=5, pady=3)
         self.date_entry.grid(row=3, column=1, padx=5, pady=3)
         self.time_entry.grid(row=4, column=1, padx=5, pady=3)
+        self.home_logo_entry.grid(row=5, column=1, padx=5, pady=3)
+        self.away_logo_entry.grid(row=6, column=1, padx=5, pady=3)
 
-        # Pre-fill values if editing
+        # Prefill
         self.home_entry.insert(0, self.match["homeTeam"])
         self.away_entry.insert(0, self.match["awayTeam"])
         self.source_entry.insert(0, self.match["streamSource"])
         self.date_entry.insert(0, self.match["fixtureDate"])
         self.time_entry.insert(0, self.match["fixtureTime"])
+        self.home_logo_entry.insert(0, self.match["homeLogo"])
+        self.away_logo_entry.insert(0, self.match["awayLogo"])
+
+        # Auto update logo fields as user types
+        self.home_entry.bind("<KeyRelease>", self.update_logo_paths)
+        self.away_entry.bind("<KeyRelease>", self.update_logo_paths)
 
         return self.home_entry
+
+    def update_logo_paths(self, event=None):
+        home = self.home_entry.get().strip().replace(" ", "_")
+        away = self.away_entry.get().strip().replace(" ", "_")
+        if home:
+            self.home_logo_entry.delete(0, tk.END)
+            self.home_logo_entry.insert(0, f"/logos/{home}.png")
+        if away:
+            self.away_logo_entry.delete(0, tk.END)
+            self.away_logo_entry.insert(0, f"/logos/{away}.png")
 
     def apply(self):
         self.result = {
@@ -187,6 +236,8 @@ class MatchDialog(simpledialog.Dialog):
             "streamSource": self.source_entry.get().strip(),
             "fixtureDate": self.date_entry.get().strip(),
             "fixtureTime": self.time_entry.get().strip(),
+            "homeLogo": self.home_logo_entry.get().strip(),
+            "awayLogo": self.away_logo_entry.get().strip()
         }
 
 
