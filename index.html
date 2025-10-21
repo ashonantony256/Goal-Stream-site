@@ -102,7 +102,7 @@
 
     footer{ margin-top:18px; padding:14px; font-size:.8rem; color:#64748b; text-align:center }
 
-    /* ----- Force iframes to be responsive (override ad script styles) ----- */
+    /* Force iframes to be responsive (override ad script styles) */
     #top-ad iframe,
     .ad-container-right iframe,
     #top-ad > div,
@@ -114,7 +114,6 @@
       border:0 !important;
     }
 
-    /* Hide problematic inline width/height or absolute styles */
     #top-ad[style],
     .ad-container-right[style]{
       max-width:100% !important;
@@ -123,27 +122,29 @@
 
     /* ---------------- Responsive rules ---------------- */
     @media (max-width: 900px) {
-      .ad-container-right{ display:none !important; } /* hide side banner on tablets and phones */
+      .ad-container-right{ display:none !important; }
       #top-ad{ padding:0 12px; }
+      .fixture{ padding:10px 12px; }
+      .team-side img{ width:60px; height:60px; }
+      .fixture-time{ font-size:0.95rem; }
+      .fixture-bottom{ font-size:0.8rem; }
     }
 
-    @media (max-width: 768px) {
-      h1{ font-size:1.3rem; margin-top:18px }
-      .team-side img{ width:56px; height:56px }
-      .fixture{ padding:10px 12px }
-      .fixture-grid{ grid-template-columns:1fr; gap:6px; text-align:left }
-      .fixture-time{ font-size:.95rem; text-align:left }
-      .team-side{ justify-content:flex-start }
-      .fixture-bottom{ text-align:left; font-size:.78rem; margin-top:4px }
-      /* Remove top ad completely on small phones if still intrusive */
-      #top-ad.responsive-hide{ display:none !important; }
+    @media (max-width: 600px) {
+      .fixture-grid{ grid-template-columns:1fr auto 1fr; gap:6px; }
+      .team-side img{ width:48px; height:48px; }
+      .team-side span{ font-size:0.9rem; }
+      .fixture-time{ font-size:0.85rem; }
+      .fixture{ padding:8px 10px; }
+      .fixture-bottom{ font-size:0.75rem; }
     }
 
     @media (max-width: 420px) {
-      .team-side img{ width:44px; height:44px }
-      .fixture-time{ font-size:.9rem }
-      .fixture-bottom{ font-size:.72rem }
-      body{ padding:0 6px }
+      .team-side img{ width:40px; height:40px; }
+      .team-side span{ font-size:0.8rem; }
+      .fixture-time{ font-size:0.8rem; }
+      .fixture-bottom{ font-size:0.7rem; }
+      body{ padding:0 4px; }
     }
   </style>
 </head>
@@ -152,7 +153,6 @@
 
   <div class="ad-label">Advertisement</div>
   <div id="top-ad" aria-hidden="true">
-    <!-- ad script may inject an iframe here -->
     <script type="text/javascript">
       atOptions = {'key':'01c2d9886b859a95bc1e4e364628ea64','format':'iframe','height':90,'width':728,'params':{}};
     </script>
@@ -179,29 +179,17 @@
         const topAd = document.getElementById('top-ad');
         const sideAd = document.getElementById('side-ad');
 
-        // if screen is narrow, remove side ad and optionally hide top ad
-        if(w <= 900){
-          if(sideAd) sideAd.remove();
-        }
-
-        // if very small, hide top ad too (optional)
-        if(w <= 420){
-          if(topAd) topAd.classList.add('responsive-hide');
-        } else {
-          if(topAd) topAd.classList.remove('responsive-hide');
-        }
+        if(w <= 900 && sideAd) sideAd.remove();
       }
 
-      // run on load and resize
       window.addEventListener('load', adaptAds);
       window.addEventListener('resize', adaptAds);
-      // also run after a short delay (ad scripts might inject later)
       setTimeout(adaptAds, 1500);
     })();
   </script>
 
   <script>
-    // fixtures loader (unchanged logic but defensive)
+    // Fixtures loader
     async function loadFixtures(){
       try{
         const resp = await fetch('match_details.json');
@@ -218,7 +206,6 @@
           const isLive = now >= fixtureDateTime && now <= endTime;
           if(isLive) div.classList.add('live');
 
-          // use smaller placeholders for mobile
           const homeLogo = f.homeLogo || 'https://via.placeholder.com/80';
           const awayLogo = f.awayLogo || 'https://via.placeholder.com/80';
 
@@ -258,7 +245,6 @@
     loadFixtures();
   </script>
 
-  <!-- keep the external tracker/ad script last (it may inject iframes) -->
   <script type='text/javascript' src='//pl27894393.effectivegatecpm.com/eb/8d/d4/eb8dd41af713fe0c3a9ea071d15b1937.js'></script>
 </body>
 </html>
