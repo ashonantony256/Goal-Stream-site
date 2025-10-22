@@ -1,20 +1,11 @@
 [
     {
-        "homeTeam": "Barcelona",
-        "awayTeam": "Olympiacos",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/1bein1/?serv=0",
-        "fixtureDate": "21-10-2025",
-        "fixtureTime": "22:15",
-        "homeLogo": "/logos/Barcelona.png",
-        "awayLogo": "/logos/Olympiacos.png"
-    },
-    {
-        "homeTeam": "Arsenal",
-        "awayTeam": "Atletico Madrid",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/bein3/?serv=1",
+        "homeTeam": "FC Goa",
+        "awayTeam": "Al-Nassr",
+        "streamSource": "https://pl.yallashooot.video/albaplayer/1bein1/?serv=2",
         "fixtureDate": "22-10-2025",
-        "fixtureTime": "00:30",
-        "homeLogo": "/logos/Arsenal.png",
-        "awayLogo": "/logos/Atletico_Madrid.png"
+        "fixtureTime": "19:15",
+        "homeLogo": "/logos/goa.png",
+        "awayLogo": "/logos/Al-Nassr.png"
     }
 ]
