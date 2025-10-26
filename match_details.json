@@ -1,47 +1,12 @@
 [
     {
-        "homeTeam": "FC Goa",
-        "awayTeam": "Al-Nassr",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/1bein1/?serv=2",
-        "fixtureDate": "22-10-2025",
-        "fixtureTime": "19:15",
-        "homeLogo": "/logos/goa.png",
-        "awayLogo": "/logos/Al-Nassr.png"
-    },
-    {
-        "homeTeam": "Chelsea",
-        "awayTeam": "Ajax",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/bein4/?serv=2",
-        "fixtureDate": "23-10-2025",
-        "fixtureTime": "00:30",
-        "homeLogo": "/logos/Chelsea.png",
-        "awayLogo": "/logos/Ajax.png"
-    },
-    {
         "homeTeam": "Real Madrid",
-        "awayTeam": "Juventus",
+        "awayTeam": "Barcelona",
         "streamSource": "https://pl.yallashooot.video/albaplayer/1bein1/?serv=2",
-        "fixtureDate": "23-10-2025",
-        "fixtureTime": "00:30",
+        "fixtureDate": "26-10-2025",
+        "fixtureTime": "20:45",
         "homeLogo": "/logos/Real_Madrid.png",
-        "awayLogo": "/logos/Juventus.png"
-    },
-    {
-        "homeTeam": "Frankfurt",
-        "awayTeam": "Liverpool",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/bein22/?serv=2",
-        "fixtureDate": "23-10-2025",
-        "fixtureTime": "00:30",
-        "homeLogo": "/logos/Frankfurt.png",
-        "awayLogo": "/logos/Liverpool.png"
-    },
-    {
-        "homeTeam": "Bayern",
-        "awayTeam": "Club Brugge",
-        "streamSource": "https://pl.yallashooot.video/albaplayer/bein5/?serv=2",
-        "fixtureDate": "23-10-2025",
-        "fixtureTime": "00:30",
-        "homeLogo": "/logos/Bayern.png",
-        "awayLogo": "/logos/Club_Brugge.png"
+        "awayLogo": "/logos/Barcelona.png"
     }
+
 ]
